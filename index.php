@@ -1,53 +1,172 @@
 <?php
-require_once 'config.php';
+require_once 'config_sqlite.php';
 require_once 'vessel_functions.php';
 require_once 'auth_functions.php';
 
-// Get current user if logged in
-$current_user = is_logged_in() ? get_logged_in_user() : null;
+// If user is logged in, redirect to departments
+if (is_logged_in()) {
+    header('Location: departments.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚢 Vessel Data Logger</title>
+    <title>🚢 Vessel Management System</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="alternate icon" href="favicon.ico">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .hero-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .login-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h1>🚢 Vessel Data Logger</h1>
-                    <p>Engine Room Equipment Management System</p>
-                </div>
-                <div style="text-align: right;">
-                    <?php if ($current_user): ?>
-                        <div style="color: #666; font-size: 14px; margin-bottom: 5px;">
-                            Welcome, <strong><?= htmlspecialchars($current_user['full_name']) ?></strong>
-                        </div>
-                        <a href="logout.php" class="btn btn-secondary" style="font-size: 12px;">Logout</a>
-                    <?php else: ?>
-                        <a href="login.php" class="btn btn-primary" style="font-size: 14px;">🔑 Login</a>
-                    <?php endif; ?>
-                </div>
-            </div>
+            <h1>🚢 Vessel Management System</h1>
+            <nav>
+                <a href="login.php" class="btn btn-primary">🔑 Login</a>
+            </nav>
         </header>
-        
-        <?php echo render_vessel_selector($conn, 'index'); ?>
-        
-        <?php if (!$current_user): ?>
-            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 15px; margin: 20px 0; text-align: center;">
-                <h3 style="color: #856404; margin: 0 0 10px 0;">📋 View-Only Mode</h3>
-                <p style="color: #856404; margin: 0 0 15px 0;">You can view logs and graphs, but need to log in to add new entries or manage vessels.</p>
-                <a href="login.php" class="btn btn-primary">🔑 Login to Add Entries</a>
-            </div>
-        <?php endif; ?>
 
-        <nav class="main-nav">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h2 class="hero-title">⚓ Complete Vessel Management</h2>
+            <p class="hero-subtitle">
+                Comprehensive digital platform for managing all aspects of vessel operations
+            </p>
+            <a href="login.php" class="btn btn-light btn-lg">Get Started</a>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚓</div>
+                <div class="feature-title">Wheelhouse Operations</div>
+                <div class="feature-description">
+                    Navigation, weather routing, communications, and bridge operations for captains and pilots.
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <div class="feature-title">Engine Room Management</div>
+                <div class="feature-description">
+                    Engine performance monitoring, maintenance scheduling, fuel tracking, and mechanical systems.
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <div class="feature-title">Deck Department</div>
+                <div class="feature-description">
+                    Cargo operations, safety equipment, deck maintenance, and crew operational management.
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Features -->
+        <div style="background: white; border-radius: 12px; padding: 30px; margin: 30px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="text-align: center; margin-bottom: 30px; color: #333;">System Features</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h4>� Performance Monitoring</h4>
+                    <p>Real-time tracking of engine performance, fuel consumption, and equipment status.</p>
+                </div>
+                <div>
+                    <h4>📝 Digital Logs</h4>
+                    <p>Comprehensive logging system for all departments with searchable history.</p>
+                </div>
+                <div>
+                    <h4>🔧 Maintenance Tracking</h4>
+                    <p>Preventive maintenance schedules, work orders, and equipment lifecycle management.</p>
+                </div>
+                <div>
+                    <h4>📦 Inventory Management</h4>
+                    <p>Parts inventory, ordering systems, and usage tracking across all departments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-section">
+            <h3>Ready to Get Started?</h3>
+            <p>Log in to access your vessel management dashboard and begin managing your operations.</p>
+            <a href="login.php" class="btn btn-primary btn-lg">🔑 Login to Dashboard</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Vessel Management System | Professional Marine Operations Platform</p>
+        </footer>
+    </div>
+</body>
+</html>
             <div class="nav-card">
                 <h3>📊 View Data</h3>
                 <p>Search and view equipment logs</p>
