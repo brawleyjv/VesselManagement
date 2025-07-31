@@ -158,12 +158,12 @@ $active_vessel = get_active_vessel_info($conn);
 
         <!-- Functions Grid -->
         <div class="functions-grid">
-            <!-- Cargo Operations -->
-            <a href="cargo.php" class="function-card cargo">
-                <div class="function-icon">📦</div>
-                <div class="function-title">Cargo Operations</div>
+            <!-- Crew Watch Schedule -->
+            <a href="crew_watch.php" class="function-card cargo">
+                <div class="function-icon">�</div>
+                <div class="function-title">Crew Watch Schedule</div>
                 <div class="function-description">
-                    Cargo loading/unloading, hold inspections, cargo securing, and loading plans.
+                    Watch rotations, crew assignments, shift schedules, and duty roster management.
                 </div>
             </a>
 
@@ -185,16 +185,17 @@ $active_vessel = get_active_vessel_info($conn);
                 </div>
             </a>
 
-            <!-- Winches & Cranes -->
-            <a href="winches.php" class="function-card equipment">
+            <!-- Rigging Inventory -->
+            <a href="rigging_inventory.php" class="function-card equipment">
                 <div class="function-icon">🏗️</div>
-                <div class="function-title">Winches & Cranes</div>
+                <div class="function-title">Rigging Inventory</div>
                 <div class="function-description">
-                    Winch operations, crane maintenance, load testing, and lifting equipment.
+                    Rigging hardware inventory, lifting equipment, load testing, and rigging supplies.
                 </div>
             </a>
 
-            <!-- Anchoring & Mooring -->
+            <!-- Anchoring & Mooring - Show for all vessel types EXCEPT Tugboat -->
+            <?php if (!$active_vessel || strtolower($active_vessel['VesselType']) !== 'tugboat'): ?>
             <a href="anchoring.php" class="function-card">
                 <div class="function-icon">⚓</div>
                 <div class="function-title">Anchoring & Mooring</div>
@@ -202,8 +203,10 @@ $active_vessel = get_active_vessel_info($conn);
                     Anchor equipment, mooring lines, windlass maintenance, and ground tackle.
                 </div>
             </a>
+            <?php endif; ?>
 
-            <!-- Fishing Gear -->
+            <!-- Fishing Gear - Show only for Commercial Fishing vessels -->
+            <?php if ($active_vessel && strtolower($active_vessel['VesselType']) === 'commercial fishing'): ?>
             <a href="fishing_gear.php" class="function-card">
                 <div class="function-icon">🎣</div>
                 <div class="function-title">Fishing Gear</div>
@@ -211,6 +214,7 @@ $active_vessel = get_active_vessel_info($conn);
                     Net maintenance, fishing equipment, gear repairs, and catch handling systems.
                 </div>
             </a>
+            <?php endif; ?>
 
             <!-- Deck Logs -->
             <a href="deck_logs.php" class="function-card">

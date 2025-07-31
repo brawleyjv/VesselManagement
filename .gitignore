@@ -32,3 +32,25 @@ desktop.ini
 *test_*
 *_fixed*
 check_*
+
+# C# / .NET files
+*.sln
+*.csproj
+*.cs
+*.xaml
+bin/
+obj/
+packages/
+*.user
+*.suo
+*.cache
+*.dll
+*.pdb
+*.exe
+Properties/
+
+# Electron build files
+dist/
+build/
+out/
+*.asar

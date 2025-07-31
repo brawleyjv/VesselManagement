@@ -1,0 +1,6 @@
+# Ultra-Minimal .htaccess for IONOS
+# Use this if the other version still causes 500 errors
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
