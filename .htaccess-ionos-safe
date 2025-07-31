@@ -1,0 +1,23 @@
+# IONOS-Safe .htaccess - Minimal Version
+# Upload this as .htaccess to fix 500 errors
+
+# Force HTTPS (IONOS compatible)
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirect root to landing page
+DirectoryIndex landing.html
+
+# Basic security (IONOS compatible)
+<Files "*.log">
+    Deny from all
+</Files>
+
+<Files "*.sqlite">
+    Deny from all
+</Files>
+
+<Files "config_*.php">
+    Deny from all
+</Files>

@@ -1,0 +1,51 @@
+# Force HTTPS (SSL)
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Security Headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+# Protect sensitive files
+<FilesMatch "\.(log|sql|sqlite|db|md)$">
+    Require all denied
+</FilesMatch>
+
+# Protect configuration files
+<FilesMatch "config.*\.php$">
+    Require all denied
+</FilesMatch>
+
+# API CORS headers
+<Directory "/api">
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type"
+</Directory>
+
+# Protect dist directory from direct access
+<Directory "/dist">
+    Require all denied
+</Directory>
+
+# Protect logs directory
+<Directory "/logs">
+    Require all denied
+</Directory>
+
+# Protect data directory
+<Directory "/data">
+    Require all denied
+</Directory>
+
+# Cache static files
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+</FilesMatch>
+
+# Redirect root to landing page
+DirectoryIndex landing.html index.html
