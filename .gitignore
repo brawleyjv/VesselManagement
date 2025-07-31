@@ -4,10 +4,6 @@
 *.sqlite3
 vessel_data.db
 
-# PHP
-*.log
-*.cache
-
 # IDE files
 .vscode/
 .idea/
@@ -23,9 +19,6 @@ desktop.ini
 *.tmp
 *.temp
 
-# Node modules (if any)
-node_modules/
-
 # Environment files
 .env
 .env.local
@@ -33,3 +26,9 @@ node_modules/
 # Backup files
 *.bak
 *.backup
+
+# Test files
+*diagnostic*
+*test_*
+*_fixed*
+check_*
